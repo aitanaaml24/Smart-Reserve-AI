@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-06-2026 a las 06:13:20
+-- Tiempo de generación: 07-08-2026 a las 04:46:18
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -161,25 +161,25 @@ CREATE TABLE `mesa` (
 
 INSERT INTO `mesa` (`id_mesa`, `numero_mesa`, `capacidad`, `ubicacion`, `estado`) VALUES
 (1, 1, 2, 'Ventana', 'Disponible'),
-(2, 2, 2, 'Ventana', 'Ocupada'),
-(3, 3, 4, 'Centro', 'Disponible'),
-(4, 4, 4, 'Centro', 'Ocupada'),
+(2, 2, 2, 'Ventana', 'Disponible'),
+(3, 3, 4, 'Centro', 'Ocupada'),
+(4, 4, 4, 'Centro', 'Disponible'),
 (5, 5, 6, 'Centro', 'Disponible'),
-(6, 6, 6, 'Centro', 'Reservada'),
+(6, 6, 6, 'Centro', 'Ocupada'),
 (7, 7, 2, 'Terraza', 'Disponible'),
-(8, 8, 2, 'Terraza', 'Ocupada'),
-(9, 9, 4, 'Terraza', 'Disponible'),
-(10, 10, 4, 'Terraza', 'Ocupada'),
-(11, 11, 6, 'Ventana', 'Disponible'),
-(12, 12, 6, 'Ventana', 'Reservada'),
-(13, 13, 2, 'Privada', 'Disponible'),
-(14, 14, 2, 'Privada', 'Ocupada'),
+(8, 8, 2, 'Terraza', 'Disponible'),
+(9, 9, 4, 'Terraza', 'Reservada'),
+(10, 10, 4, 'Terraza', 'Disponible'),
+(11, 11, 6, 'Ventana', 'Reservada'),
+(12, 12, 6, 'Ventana', 'Disponible'),
+(13, 13, 2, 'Privada', 'Ocupada'),
+(14, 14, 2, 'Privada', 'Disponible'),
 (15, 15, 4, 'Privada', 'Disponible'),
-(16, 16, 4, 'Privada', 'Reservada'),
-(17, 17, 8, 'Salón Principal', 'Disponible'),
-(18, 18, 8, 'Salón Principal', 'Ocupada'),
-(19, 19, 10, 'Salón Principal', 'Disponible'),
-(20, 20, 10, 'Salón Principal', 'Reservada');
+(16, 16, 4, 'Privada', 'Disponible'),
+(17, 17, 8, 'Salón Principal', 'Ocupada'),
+(18, 18, 8, 'Salón Principal', 'Reservada'),
+(19, 19, 10, 'Salón Principal', 'Reservada'),
+(20, 20, 10, 'Salón Principal', 'Disponible');
 
 -- --------------------------------------------------------
 
@@ -193,36 +193,46 @@ CREATE TABLE `orden` (
   `id_mesa` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `fecha` date NOT NULL,
-  `hora` time NOT NULL
+  `hora` time NOT NULL,
+  `id_reservacion` int(11) DEFAULT NULL,
+  `estado` enum('Abierta','Cerrada','Cancelada') NOT NULL DEFAULT 'Abierta',
+  `total` decimal(10,2) NOT NULL DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `orden`
 --
 
-INSERT INTO `orden` (`id_orden`, `id_cliente`, `id_mesa`, `id_usuario`, `fecha`, `hora`) VALUES
-(1, 1, 1, 2, '2023-01-01', '11:38:36'),
-(2, 2, 2, 3, '2023-01-01', '11:57:40'),
-(3, 3, 3, 6, '2023-01-01', '12:12:28'),
-(4, 4, 4, 8, '2023-01-01', '12:16:31'),
-(5, 5, 5, 2, '2023-01-01', '12:21:30'),
-(6, 6, 6, 3, '2023-01-01', '12:29:36'),
-(7, 7, 7, 6, '2023-01-01', '12:50:37'),
-(8, 8, 8, 8, '2023-01-01', '12:51:37'),
-(9, 9, 9, 2, '2023-01-01', '12:52:01'),
-(10, 10, 10, 3, '2023-01-01', '13:00:15'),
-(11, 11, 11, 6, '2023-01-01', '13:02:59'),
-(12, 12, 12, 8, '2023-01-01', '13:04:41'),
-(13, 13, 13, 2, '2023-01-01', '13:11:55'),
-(14, 14, 14, 3, '2023-01-01', '13:14:19'),
-(15, 15, 15, 6, '2023-01-01', '13:33:00'),
-(16, 16, 16, 8, '2023-01-01', '13:34:07'),
-(17, 17, 17, 2, '2023-01-01', '13:53:00'),
-(18, 18, 18, 3, '2023-01-01', '13:57:08'),
-(19, 19, 19, 6, '2023-01-01', '13:59:09'),
-(20, 20, 20, 8, '2023-01-01', '14:03:08'),
-(21, 21, 1, 2, '2023-01-01', '14:14:29'),
-(22, 22, 2, 3, '2023-01-01', '14:16:26');
+INSERT INTO `orden` (`id_orden`, `id_cliente`, `id_mesa`, `id_usuario`, `fecha`, `hora`, `id_reservacion`, `estado`, `total`) VALUES
+(1, 1, 1, 2, '2023-01-01', '11:38:36', NULL, 'Cerrada', 31.90),
+(2, 2, 2, 3, '2023-01-01', '11:57:40', NULL, 'Cerrada', 0.00),
+(3, 3, 3, 6, '2023-01-01', '12:12:28', NULL, 'Cerrada', 0.00),
+(4, 4, 4, 8, '2023-01-01', '12:16:31', NULL, 'Cerrada', 0.00),
+(5, 5, 5, 2, '2023-01-01', '12:21:30', NULL, 'Cerrada', 0.00),
+(6, 6, 6, 3, '2023-01-01', '12:29:36', NULL, 'Cerrada', 0.00),
+(7, 7, 7, 6, '2023-01-01', '12:50:37', NULL, 'Cerrada', 0.00),
+(8, 8, 8, 8, '2023-01-01', '12:51:37', NULL, 'Cerrada', 0.00),
+(9, 9, 9, 2, '2023-01-01', '12:52:01', NULL, 'Cerrada', 0.00),
+(10, 10, 10, 3, '2023-01-01', '13:00:15', NULL, 'Cerrada', 0.00),
+(11, 11, 11, 6, '2023-01-01', '13:02:59', NULL, 'Cerrada', 0.00),
+(12, 12, 12, 8, '2023-01-01', '13:04:41', NULL, 'Cerrada', 0.00),
+(13, 13, 13, 2, '2023-01-01', '13:11:55', NULL, 'Cerrada', 0.00),
+(14, 14, 14, 3, '2023-01-01', '13:14:19', NULL, 'Cerrada', 0.00),
+(15, 15, 15, 6, '2023-01-01', '13:33:00', NULL, 'Cerrada', 0.00),
+(16, 16, 16, 8, '2023-01-01', '13:34:07', NULL, 'Cerrada', 0.00),
+(17, 17, 17, 2, '2023-01-01', '13:53:00', NULL, 'Cerrada', 0.00),
+(18, 18, 18, 3, '2023-01-01', '13:57:08', NULL, 'Cerrada', 0.00),
+(19, 19, 19, 6, '2023-01-01', '13:59:09', NULL, 'Cerrada', 0.00),
+(20, 20, 20, 8, '2023-01-01', '14:03:08', NULL, 'Cerrada', 0.00),
+(21, 21, 1, 2, '2023-01-01', '14:14:29', NULL, 'Cerrada', 0.00),
+(22, 22, 2, 3, '2023-01-01', '14:16:26', NULL, 'Cerrada', 0.00),
+(24, 24, 14, 1, '2026-08-06', '18:00:00', 8, 'Cerrada', 0.00),
+(25, 22, 18, 1, '2026-08-09', '19:00:00', 10, 'Cerrada', 66.90),
+(26, 38, 2, 1, '2026-08-07', '18:00:00', 11, 'Cerrada', 0.00),
+(27, 23, 17, 1, '2026-08-14', '20:00:00', 12, 'Abierta', 256.40),
+(28, 14, 3, 1, '2026-08-18', '12:00:00', 16, 'Abierta', 104.90),
+(29, 39, 13, 1, '2026-08-10', '18:30:00', 13, 'Abierta', 41.90),
+(30, 15, 6, 1, '2026-08-09', '16:00:00', 14, 'Abierta', 88.75);
 
 -- --------------------------------------------------------
 
@@ -302,7 +312,88 @@ INSERT INTO `order_details` (`order_details_id`, `order_id`, `order_date`, `orde
 (57, 20, '2023-01-01', '14:03:08', 124),
 (58, 21, '2023-01-01', '14:14:29', 110),
 (59, 22, '2023-01-01', '14:16:26', 124),
-(60, 22, '2023-01-01', '14:16:26', 110);
+(60, 22, '2023-01-01', '14:16:26', 110),
+(61, 25, '2026-08-09', '19:00:00', 125),
+(62, 25, '2026-08-09', '19:00:00', 125),
+(63, 25, '2026-08-09', '19:00:00', 129),
+(64, 25, '2026-08-09', '19:00:00', 129),
+(65, 1, '2023-01-01', '11:38:36', 102),
+(66, 30, '2026-08-09', '16:00:00', 104),
+(67, 30, '2026-08-09', '16:00:00', 111),
+(68, 30, '2026-08-09', '16:00:00', 111),
+(69, 30, '2026-08-09', '16:00:00', 101),
+(70, 30, '2026-08-09', '16:00:00', 101),
+(71, 30, '2026-08-09', '16:00:00', 101),
+(72, 30, '2026-08-09', '16:00:00', 128),
+(73, 29, '2026-08-10', '18:30:00', 102),
+(74, 29, '2026-08-10', '18:30:00', 102),
+(75, 29, '2026-08-10', '18:30:00', 106),
+(76, 29, '2026-08-10', '18:30:00', 106),
+(77, 28, '2026-08-18', '12:00:00', 124),
+(78, 28, '2026-08-18', '12:00:00', 124),
+(79, 28, '2026-08-18', '12:00:00', 124),
+(80, 28, '2026-08-18', '12:00:00', 124),
+(81, 28, '2026-08-18', '12:00:00', 117),
+(82, 28, '2026-08-18', '12:00:00', 117),
+(83, 28, '2026-08-18', '12:00:00', 121),
+(84, 28, '2026-08-18', '12:00:00', 121),
+(85, 27, '2026-08-14', '20:00:00', 129),
+(86, 27, '2026-08-14', '20:00:00', 129),
+(87, 27, '2026-08-14', '20:00:00', 129),
+(88, 27, '2026-08-14', '20:00:00', 125),
+(89, 27, '2026-08-14', '20:00:00', 125),
+(90, 27, '2026-08-14', '20:00:00', 125),
+(91, 27, '2026-08-14', '20:00:00', 125),
+(92, 27, '2026-08-14', '20:00:00', 125),
+(93, 27, '2026-08-14', '20:00:00', 125),
+(94, 27, '2026-08-14', '20:00:00', 125),
+(95, 27, '2026-08-14', '20:00:00', 125),
+(96, 27, '2026-08-14', '20:00:00', 116),
+(97, 27, '2026-08-14', '20:00:00', 116),
+(98, 27, '2026-08-14', '20:00:00', 116),
+(99, 27, '2026-08-14', '20:00:00', 116),
+(100, 27, '2026-08-14', '20:00:00', 104);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `reservacion`
+--
+
+CREATE TABLE `reservacion` (
+  `id_reservacion` int(11) NOT NULL,
+  `id_cliente` int(11) NOT NULL,
+  `id_mesa` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `hora` time NOT NULL,
+  `numero_personas` int(11) NOT NULL,
+  `estado` enum('Pendiente','Confirmada','Cancelada','Completada') DEFAULT 'Pendiente',
+  `observaciones` varchar(255) DEFAULT NULL,
+  `fecha_registro` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `reservacion`
+--
+
+INSERT INTO `reservacion` (`id_reservacion`, `id_cliente`, `id_mesa`, `fecha`, `hora`, `numero_personas`, `estado`, `observaciones`, `fecha_registro`) VALUES
+(1, 18, 9, '2026-08-05', '13:30:00', 4, 'Completada', 'Celebración de cumpleaños', '2026-08-04 22:34:41'),
+(4, 23, 7, '2026-08-08', '11:00:00', 2, 'Completada', 'Alergia a las nueces', '2026-08-04 22:42:38'),
+(5, 45, 1, '2026-08-07', '12:00:00', 2, 'Completada', '', '2026-08-04 22:43:51'),
+(6, 4, 1, '2026-08-10', '15:30:00', 2, 'Cancelada', '', '2026-08-04 22:44:50'),
+(7, 37, 20, '2026-08-15', '14:00:00', 10, 'Completada', '', '2026-08-04 22:48:32'),
+(8, 26, 16, '2026-08-05', '09:00:00', 4, 'Completada', '', '2026-08-05 08:00:33'),
+(9, 24, 14, '2026-08-06', '18:00:00', 2, 'Completada', '', '2026-08-05 08:05:30'),
+(10, 22, 18, '2026-08-09', '19:00:00', 8, 'Completada', '', '2026-08-05 08:20:09'),
+(11, 38, 2, '2026-08-07', '18:00:00', 2, 'Completada', '', '2026-08-05 08:20:41'),
+(12, 23, 17, '2026-08-14', '20:00:00', 8, 'Confirmada', '', '2026-08-06 18:10:10'),
+(13, 39, 13, '2026-08-10', '18:30:00', 2, 'Confirmada', '', '2026-08-06 18:10:56'),
+(14, 15, 6, '2026-08-09', '16:00:00', 6, 'Confirmada', '', '2026-08-06 18:12:16'),
+(15, 46, 19, '2026-08-12', '14:30:00', 10, 'Pendiente', 'Celebración de cumpleaños', '2026-08-06 18:13:50'),
+(16, 14, 3, '2026-08-18', '12:00:00', 4, 'Confirmada', '', '2026-08-06 18:15:44'),
+(17, 44, 9, '2026-08-16', '11:00:00', 4, 'Pendiente', 'Alergia a las nueces', '2026-08-06 18:16:53'),
+(18, 45, 18, '2026-08-20', '19:00:00', 8, 'Pendiente', '', '2026-08-06 18:17:24'),
+(19, 16, 11, '2026-08-12', '19:30:00', 6, 'Pendiente', '', '2026-08-06 18:25:26');
 
 -- --------------------------------------------------------
 
@@ -361,6 +452,7 @@ ALTER TABLE `mesa`
 --
 ALTER TABLE `orden`
   ADD PRIMARY KEY (`id_orden`),
+  ADD UNIQUE KEY `uk_orden_reservacion` (`id_reservacion`),
   ADD KEY `id_cliente` (`id_cliente`),
   ADD KEY `id_mesa` (`id_mesa`),
   ADD KEY `id_usuario` (`id_usuario`);
@@ -370,8 +462,16 @@ ALTER TABLE `orden`
 --
 ALTER TABLE `order_details`
   ADD PRIMARY KEY (`order_details_id`),
-  ADD KEY `order_id` (`order_id`),
-  ADD KEY `item_id` (`item_id`);
+  ADD KEY `item_id` (`item_id`),
+  ADD KEY `order_details_ibfk_1` (`order_id`);
+
+--
+-- Indices de la tabla `reservacion`
+--
+ALTER TABLE `reservacion`
+  ADD PRIMARY KEY (`id_reservacion`),
+  ADD UNIQUE KEY `uk_mesa_fecha_hora` (`id_mesa`,`fecha`,`hora`),
+  ADD KEY `fk_reservacion_cliente` (`id_cliente`);
 
 --
 -- Indices de la tabla `usuario`
@@ -396,6 +496,24 @@ ALTER TABLE `mesa`
   MODIFY `id_mesa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
+-- AUTO_INCREMENT de la tabla `orden`
+--
+ALTER TABLE `orden`
+  MODIFY `id_orden` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT de la tabla `order_details`
+--
+ALTER TABLE `order_details`
+  MODIFY `order_details_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+
+--
+-- AUTO_INCREMENT de la tabla `reservacion`
+--
+ALTER TABLE `reservacion`
+  MODIFY `id_reservacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
@@ -409,6 +527,7 @@ ALTER TABLE `usuario`
 -- Filtros para la tabla `orden`
 --
 ALTER TABLE `orden`
+  ADD CONSTRAINT `fk_orden_reservacion` FOREIGN KEY (`id_reservacion`) REFERENCES `reservacion` (`id_reservacion`),
   ADD CONSTRAINT `orden_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`),
   ADD CONSTRAINT `orden_ibfk_2` FOREIGN KEY (`id_mesa`) REFERENCES `mesa` (`id_mesa`),
   ADD CONSTRAINT `orden_ibfk_3` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
@@ -419,6 +538,13 @@ ALTER TABLE `orden`
 ALTER TABLE `order_details`
   ADD CONSTRAINT `order_details_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orden` (`id_orden`),
   ADD CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `menu_items` (`menu_item_id`);
+
+--
+-- Filtros para la tabla `reservacion`
+--
+ALTER TABLE `reservacion`
+  ADD CONSTRAINT `fk_reservacion_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`),
+  ADD CONSTRAINT `fk_reservacion_mesa` FOREIGN KEY (`id_mesa`) REFERENCES `mesa` (`id_mesa`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

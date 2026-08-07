@@ -1,3 +1,7 @@
+<?php
+include("includes/proteger.php");
+?>
+
 <?php include("includes/header.php"); ?>
 
 <h1>Bienvenido al Sistema de Restaurante</h1>

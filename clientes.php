@@ -1,4 +1,8 @@
 <?php
+include("includes/proteger.php");
+?>
+
+<?php
 
 include("includes/conexion.php");
 include("includes/header.php");
